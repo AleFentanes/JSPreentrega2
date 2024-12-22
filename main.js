@@ -2,16 +2,16 @@
 
 //PREENTREGA 2 
 /*Objetivo del ejercicio:
-- escribir la traducción de una palabra de alemán a español
+- escribir la traducción de una palabra de alemán a español 
 - Sólo hay dos intentos
-- Crear array
-- Método de búsqueda y filtrado: por artículo
-- acumular puntos
+- Crear array 
+- Método de búsqueda y filtrado: por artículo (der,das,die)
+- acumular puntos x acierto
 */
 
 function traducir() {
 
-    // 1. Array:
+    // Array
     const palabras = [
         { ale: "der Vater", esp: "el padre" },
         { ale: "die Mutter", esp: "la madre" },
@@ -23,75 +23,91 @@ function traducir() {
         { ale: "das Kind", esp: "el niño" },
         { ale: "das Baby", esp: "el bebé" },
         { ale: "die Oma", esp: "la abuela" },
-        { ale: "der Opa", esp: "el abuelo" },
+        { ale: "der Opa", esp: "el abuelo" }
     ];
-    
-    // Seleccionar una palabra aleatoria del array (filtrar)
+
+
+    // Para obtener una palabra aleatoria
     function obtenerPalabraAleatoria(palabrasFiltradas) {
         const index = Math.floor(Math.random() * palabrasFiltradas.length);
-            return palabrasFiltradas[index];
-        }
+        return palabrasFiltradas[index];
+    }
 
-    // 2. M. Búsqueda y filtrado: palabras por "artículo" en alemán 
+
+    // Para buscar por artículo en alemán
     function buscarPorArticulo(articulo) {
-            return palabras.filter(palabra => palabra.ale.toLowerCase().startsWith(articulo.toLowerCase()));
-        }
+        return palabras.filter(palabra => palabra.ale.toLowerCase().startsWith(articulo.toLowerCase()));
+    }
 
-    //Instrucción: Buscar y filtrar
+
+    // Instrucción
     let filtro = prompt("¿Quieres buscar palabras por su artículo en alemán? (Sí/No)").toLowerCase();
-    let palabrasFiltradas = palabras; 
-    
+    let palabrasFiltradas = palabras;
+
     if (filtro === "sí") {
         let articuloBuscar = prompt("Escribe el artículo (der, die, das) para filtrar las palabras:");
-        palabrasFiltradas = buscarPorArticulo(articuloBuscar); 
-        }
+        palabrasFiltradas = buscarPorArticulo(articuloBuscar);
+    }
+
     
     let continuar = true; // Continuar con el juego
-    let puntos = 0; // Para acumular puntos 
-       
-    while (continuar) {
-        let intentos = 2; // Reiniciar intentos a 2 para cada nueva palabra
-        const palabraSeleccionada = obtenerPalabraAleatoria(palabrasFiltradas);
-        const palabraAle = palabraSeleccionada.ale;  //  Alemán
-        const palabraEsp = palabraSeleccionada.esp;  //  Español
-    
+    let puntos = 0; // Acumular puntos
 
-    // 3. Instrucción: traducir
-    let palabra = prompt(`Traduce "${palabraAle}" al español (Sólo tienes 2 intentos).`);
-            
-    // Si cancela o no escribe nada
-    if (palabra === null || palabra === "") {
-        alert("Noch einmal / Intenta de nuevo");
-            continue; // Continuar con otra palabra
+    while (continuar) {
+        let intentos = 2; // Para cada nueva palabra
+        const palabraSeleccionada = obtenerPalabraAleatoria(palabrasFiltradas);
+        const palabraAle = palabraSeleccionada.ale;  // Alemán
+        const palabraEsp = palabraSeleccionada.esp;  // Español
+
+        // Instrucción
+        let palabra = prompt(`Traduce "${palabraAle}" al español (Sólo tienes 2 intentos).`);
+
+        // Si cancela o no escribe nada
+        if (palabra === null || palabra === "") {
+            alert("Noch einmal / Intenta de nuevo");
+            continue; 
         }
-    
-    // Intentos
-    let respuestaCorrecta = false; 
-    
-        
+
+        // Intentos
+        let respuestaCorrecta = false; 
+
         while (intentos > 0 && !respuestaCorrecta) {
             if (palabra.toLowerCase() === palabraEsp.toLowerCase()) {
                 alert("Gut gemacht! / ¡Bien hecho!");
-                puntos++; // Suma puntos por respuesta correcta
-                respuestaCorrecta = true; // Terminar si es correcto
+                puntos++; // Suma x correcta
+                respuestaCorrecta = true; // Termina 
             } else {
-                intentos--; // Resta intentos
+                intentos--; // Resta
                 if (intentos > 0) {
                     palabra = prompt(`Falsch! / ¡Incorrecto! Te queda ${intentos} intento(s). Traduce nuevamente: "${palabraAle}".`);
                 } else {
                     alert(`Has superado el número de intentos. La respuesta correcta es "${palabraEsp}".`);
-                    respuestaCorrecta = true; 
+                    respuestaCorrecta = true;
                 }
             }
         }
-    
-    // 4. Continuar con más palabras
-    continuar = confirm("¿Quieres seguir jugando?");
+
+        // Para no repetir palabras
+        const index = palabrasFiltradas.indexOf(palabraSeleccionada);
+
+        if (index !== -1) {
+            palabrasFiltradas.splice(index, 1);
+        }
+
+        // Si ya no quedan palabras
+        if (palabrasFiltradas.length === 0) {
+            alert("¡Ya no hay más palabras disponibles! Has completado el juego.");
+            continuar = false; // Termina si no hay más palabras
+        } else {
+            continuar = confirm("¿Quieres seguir jugando?");
+        }
     }
-    
-    // 5. Mostrar puntos al final
+
+    // Mostrar puntos al final
     alert(`Acumulaste: ${puntos} puntos.`);
 }
-    
+
 traducir();
+
+
     
